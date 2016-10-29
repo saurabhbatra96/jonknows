@@ -12,6 +12,7 @@ var $ = require('gulp-load-plugins')({ lazy: true });
 var del = require('del');
 var runSequence = require('run-sequence');
 var Xml2Js = require('xml2js');
+var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
 var config = {
   release: './dist',
@@ -60,50 +61,50 @@ gulp.task('validate-forstore', ['validate-xml', 'validate-highResolutionIconUrl'
   var options = minimist(process.argv.slice(2));
   var xmlFilePath = options.xmlfile;
   var xml = fs.readFileSync(xmlFilePath, 'utf-8');
-  
+
   var parser = new Xml2Js.Parser();
   parser.parseString(xml, function(err, manifestJson) {
     // 5.7. Apps and add-ins must use SSL
     if (manifestJson.OfficeApp.DefaultSettings[0].SourceLocation[0].$.DefaultValue.indexOf('https://') !== 0) {
-      console.log(chalk.red('ERROR: 5.7. Apps and add-ins must be secured with a valid ' + 
+      console.log(chalk.red('ERROR: 5.7. Apps and add-ins must be secured with a valid ' +
         'and trusted SSL certificate (HTTPS).'));
-      console.log(chalk.blue('FIX: Change the URL of OfficeApp/DefaultSettings/SourceLocation/DefaultValue (' + 
+      console.log(chalk.blue('FIX: Change the URL of OfficeApp/DefaultSettings/SourceLocation/DefaultValue (' +
         manifestJson.OfficeApp.DefaultSettings[0].SourceLocation[0].$.DefaultValue) + ') to https://');
     }
-    
+
     // 5.10. icon must be present
     if (!manifestJson.OfficeApp.HighResolutionIconUrl ||
         manifestJson.OfficeApp.HighResolutionIconUrl.length === 0) {
-      console.log(chalk.red('ERROR: 5.10. You must specify an icon for your app or add-in in your ' + 
+      console.log(chalk.red('ERROR: 5.10. You must specify an icon for your app or add-in in your ' +
         'add-in package or manifest'));
-      console.log(chalk.blue('FIX: Add the HighResolutionIconUrl element to the manifest, eg. ' + 
+      console.log(chalk.blue('FIX: Add the HighResolutionIconUrl element to the manifest, eg. ' +
         '<HighResolutionIconUrl DefaultValue="https://contoso.com/myicon.png" />'));
     }
-    
+
     // 7.16. Support URL is required
     if (!manifestJson.OfficeApp.SupportUrl) {
-      console.log(chalk.red('ERROR: 7.16. You must specify a valid Support URL in the SupportURL element ' + 
+      console.log(chalk.red('ERROR: 7.16. You must specify a valid Support URL in the SupportURL element ' +
         'of your Office Add-in manifest.'));
-      console.log(chalk.blue('FIX: Add the SupportUrl element to the manifest, eg. ' + 
+      console.log(chalk.blue('FIX: Add the SupportUrl element to the manifest, eg. ' +
         '<SupportUrl DefaultValue="http://contoso.com/support" />'));
     }
-    
+
     // 10.9. Add-ins must use v1.1 of the schema
     if (manifestJson.OfficeApp.$.xmlns !== 'http://schemas.microsoft.com/office/appforoffice/1.1') {
-      console.log(chalk.red('ERROR: 10.9. Office Add-ins must use version 1.1 of the Office.js library ' + 
+      console.log(chalk.red('ERROR: 10.9. Office Add-ins must use version 1.1 of the Office.js library ' +
         'and the manifest schema.'));
-      console.log(chalk.blue('FIX: In the OfficeApp element change the value of the xlmns attribute to ' + 
+      console.log(chalk.blue('FIX: In the OfficeApp element change the value of the xlmns attribute to ' +
         'http://schemas.microsoft.com/office/appforoffice/1.1'));
     }
   });
-  
+
   var index = fs.readFileSync('index.html', 'utf-8').toLowerCase();
-  
+
   // 7.15. Add-ins must use hosted Office.js file
   if (index.indexOf('//appsforoffice.microsoft.com/lib/1.1/hosted/office.js') < 0 &&
       index.indexOf('//appsforoffice.microsoft.com/lib/1/hosted/office.js') < 0) {
       console.log(chalk.red('ERROR: 7.15. All Office Add-ins must use the Microsoft-hosted Office.js file.'));
-      console.log(chalk.blue('FIX: In the index.html change all references to office.js to ' + 
+      console.log(chalk.blue('FIX: In the index.html change all references to office.js to ' +
         'https://appsforoffice.microsoft.com/lib/1/hosted/office.js'));
   }
 });
@@ -116,7 +117,7 @@ gulp.task('validate-xml', function () {
   var xsd = fs.readFileSync('./manifest.xsd');
   var xmlFilePath = options.xmlfile;
   var xml = fs.readFileSync(xmlFilePath);
-  
+
   var result = xmllint.validateXML({
     xml: xml,
     schema: xsd
@@ -137,21 +138,21 @@ gulp.task('validate-highResolutionIconUrl', function() {
   var options = minimist(process.argv.slice(2));
   var xmlFilePath = options.xmlfile;
   var xml = fs.readFileSync(xmlFilePath, 'utf-8');
-  
+
   var parser = new Xml2Js.Parser();
   parser.parseString(xml, function(err, manifestJson) {
     if (manifestJson.OfficeApp.HighResolutionIconUrl &&
         manifestJson.OfficeApp.HighResolutionIconUrl.length > 0 &&
         manifestJson.OfficeApp.HighResolutionIconUrl[0].$ &&
         manifestJson.OfficeApp.HighResolutionIconUrl[0].$.DefaultValue) {
-      var iconUrl = manifestJson.OfficeApp.HighResolutionIconUrl[0].$.DefaultValue; 
+      var iconUrl = manifestJson.OfficeApp.HighResolutionIconUrl[0].$.DefaultValue;
       if (iconUrl.indexOf('https://') < 0) {
         console.log(chalk.red('ERROR: The value of the HighResolutionIconUrl attribute contains an unsupported URL.' +
                 ' You can only use https:// URLs.'));
       }
-      
+
       if (!/^.+\.(png|jpg|jpeg)$/.test(iconUrl)) {
-        console.log(chalk.red('ERROR: The URL of your app icon must end with one of the following extensions:' + 
+        console.log(chalk.red('ERROR: The URL of your app icon must end with one of the following extensions:' +
                   ' png, jp(e)g'));
       }
     }
@@ -221,9 +222,9 @@ gulp.task('dist-minify-css', function() {
          ], { base: config.release+'/' })
              .pipe(replace(config.localUrl, argv.url))
              .pipe(gulp.dest(config.release));
-     }        
+     }
  });
- 
+
 /**
  * Creates a release version of the project
  */
