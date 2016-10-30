@@ -26,12 +26,15 @@ state = "empty";
 
           if (result.status === Office.AsyncResultStatus.Succeeded) {
             console.log('The selected text is:', '"' + resultvalue + '"');
-            if (resultvalue.indexOf(" ")>=0) {
+            if (resultvalue.indexOf("http")>=0) {
+              imageTagByUrl(resultvalue);
+            }
+            else if (resultvalue.indexOf(" ")>=0) {
               state = "sentence";
               getKeywords(resultvalue);
               if ((resultvalue.substring(resultvalue.indexOf(".")+1)).indexOf(".")>=0)
                 parasenti(resultvalue);
-              else
+              else if (resultvalue.indexOf(".")>=0)
                 sentencesenti(resultvalue);
             } else if (resultvalue=="") {
               state = "empty";
@@ -330,6 +333,33 @@ state = "empty";
   	xhrObj.open("GET", url, true);
   	xhrObj.setRequestHeader("Ocp-Apim-Subscription-Key","3afb767cdfd3453aaff41d92fb571965");
   	xhrObj.send(null);
+  }
+
+  function imageTagByUrl(imageUrl){
+
+  	var xhrObj = new XMLHttpRequest();
+  	var url = "https://api.projectoxford.ai/vision/v1.0/describe?maxCandidates=1";
+
+
+  	// var data = '{ "documents": [ { "language":"en", "id":"1", "text":"' + sentence + '" } ] }';
+  	var data = '{ "url":"'+ imageUrl + '" }';
+
+  	xhrObj.onreadystatechange = function() {
+  	    // console.log('readyState '+xhrObj.readyState);
+  	    if (xhrObj.readyState == 4) {
+          var resp = JSON.parse(xhrObj.responseText);
+  	      console.log(xhrObj.responseText);
+          var desc = resp.description.captions[0].text;
+          document.getElementById("first-h-subh1").innerHTML = desc + "<br><p class=\"ms-font-l\">Some alternatives:</p>";
+          document.getElementById("first-heading").innerHTML = "I think it is... ";
+          bingimgsearch(desc);
+  	    }
+  	}
+
+  	xhrObj.open("POST", url, true);
+  	xhrObj.setRequestHeader("Content-Type","application/json");
+  	xhrObj.setRequestHeader("Ocp-Apim-Subscription-Key","56ed9e13b5e248a8a61cefff926584d5");
+  	xhrObj.send(data);
   }
 
   function cleanScreen() {
