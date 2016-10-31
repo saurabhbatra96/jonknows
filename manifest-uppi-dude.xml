@@ -4,7 +4,7 @@
   <Version>1.0.0.0</Version>
   <ProviderName>[Provider name]</ProviderName>
   <DefaultLocale>en-US</DefaultLocale>
-  <DisplayName DefaultValue="Uppi Brew"/>
+  <DisplayName DefaultValue="Jon Knows"/>
   <Description DefaultValue="[Task pane Add-in description]"/>
   <IconUrl DefaultValue="https://localhost:8443/images/icon-32.png"/>
   <Hosts>
