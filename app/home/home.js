@@ -75,7 +75,7 @@ state = "empty";
 
     xhrObj.open("POST", url, true);
     xhrObj.setRequestHeader("Content-Type","application/json");
-    xhrObj.setRequestHeader("Ocp-Apim-Subscription-Key","7514572919c74af9a97d235f9a9355d4");
+    xhrObj.setRequestHeader("Ocp-Apim-Subscription-Key","9b85b6901de54862a36f206df044a6f0");
     xhrObj.send(data);
 
   }
@@ -146,7 +146,7 @@ state = "empty";
   		var data = '{ "documents": [ { "language":"en", "id":"1", "text":"' + sentences[i] + '" } ] }';
   		xhrObj.open("POST", url, false);
   		xhrObj.setRequestHeader("Content-Type","application/json");
-  		xhrObj.setRequestHeader("Ocp-Apim-Subscription-Key","7514572919c74af9a97d235f9a9355d4");
+  		xhrObj.setRequestHeader("Ocp-Apim-Subscription-Key","9b85b6901de54862a36f206df044a6f0");
   		xhrObj.send(data);
 
   		var JSONobj = JSON.parse(xhrObj.responseText);
@@ -180,7 +180,7 @@ state = "empty";
   		var data = '{ "documents": [ { "language":"en", "id":"1", "text":"' + words[i] + '" } ] }';
   		xhrObj.open("POST", url, false);
   		xhrObj.setRequestHeader("Content-Type","application/json");
-  		xhrObj.setRequestHeader("Ocp-Apim-Subscription-Key","7514572919c74af9a97d235f9a9355d4");
+  		xhrObj.setRequestHeader("Ocp-Apim-Subscription-Key","9b85b6901de54862a36f206df044a6f0");
   		xhrObj.send(data);
 
   		var JSONobj = JSON.parse(xhrObj.responseText);
@@ -247,7 +247,7 @@ state = "empty";
   	data = data + '] }';
   	xhrObj.open("POST", url, false);
   	xhrObj.setRequestHeader("Content-Type","application/json");
-  	xhrObj.setRequestHeader("Ocp-Apim-Subscription-Key","96d1620188ce4d4c8d60074af57689c9");
+  	xhrObj.setRequestHeader("Ocp-Apim-Subscription-Key","799f9d82a6ce4d4fb00f9f7a09ee6528");
   	xhrObj.send(data);
 
     // console.log(xhrObj.responseText);
@@ -301,7 +301,7 @@ state = "empty";
   	}
 
   	xhrObj.open("GET", url, true);
-  	xhrObj.setRequestHeader("Ocp-Apim-Subscription-Key","3afb767cdfd3453aaff41d92fb571965");
+  	xhrObj.setRequestHeader("Ocp-Apim-Subscription-Key","930b41ed85874ff6a2ca57aef62e9d18");
   	xhrObj.send(null);
   }
 
@@ -331,7 +331,7 @@ state = "empty";
   	}
 
   	xhrObj.open("GET", url, true);
-  	xhrObj.setRequestHeader("Ocp-Apim-Subscription-Key","3afb767cdfd3453aaff41d92fb571965");
+  	xhrObj.setRequestHeader("Ocp-Apim-Subscription-Key","930b41ed85874ff6a2ca57aef62e9d18");
   	xhrObj.send(null);
   }
 
@@ -358,7 +358,7 @@ state = "empty";
 
   	xhrObj.open("POST", url, true);
   	xhrObj.setRequestHeader("Content-Type","application/json");
-  	xhrObj.setRequestHeader("Ocp-Apim-Subscription-Key","56ed9e13b5e248a8a61cefff926584d5");
+  	xhrObj.setRequestHeader("Ocp-Apim-Subscription-Key","c47c05a109894e8eb91c16b6b026267a");
   	xhrObj.send(data);
   }
 
