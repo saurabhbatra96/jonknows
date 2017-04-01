@@ -34,7 +34,10 @@ gulp.task('default', ['help']);
 gulp.task('serve-static', function () {
   gulp.src('.')
     .pipe(webserver({
-      https: true,
+      https: {
+        key: 'CertKeys/key.pem',
+        cert: 'CertKeys/cert.pem'
+      },
       port: '8443',
       host: 'localhost',
       directoryListing: true,
